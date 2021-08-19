@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Node } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
+import { Dimensions } from 'react-native';
 
 
 // 3rd party
 import { Formik } from 'formik';
 import { Input, Button } from 'react-native-elements';
 import * as yup from 'yup';
+import axios from 'axios';
+import Toast from 'react-native-toast-message';
+
+import { API_URL } from "@env";
+
+const windowHeight = Dimensions.get('window').height;
+
 
 const PHONE_NUM_MIN_DIGITS = 11;
 
@@ -32,12 +40,37 @@ const registerValidation = yup.object().shape({
 
 })
 
-function registerUser(userData) {
-    console.log(userData);
-}
+const Register: () => Node = ({ navigation }) => {
 
+    const [loading, toggleLoading] = useState(false);
 
-const Register: () => Node = () => {
+    const handleRegister = (userData) => {
+
+        toggleLoading(true);
+        axios.post(API_URL + 'users', userData).then((response) => {
+            toggleLoading(false);
+            Toast.show({
+                text1: 'success',
+                text2: 'Thank you for registering! Please check your email to verify your account',
+                type: 'success',
+                visibilityTime: 4000
+            })
+            navigation.navigate('Login')
+        }).catch((error) => {
+            Toast.show({
+                text1: 'error',
+                text2: JSON.stringify(error.response.data),
+                type: 'error',
+                visibilityTime: 4000
+            })
+            toggleLoading(false);
+        })
+    }
+
+    const navigateToLogin = () => {
+        navigation.navigate('Login')
+    }
+
 
     return (
 
@@ -46,9 +79,10 @@ const Register: () => Node = () => {
             <Formik
                 validationSchema={registerValidation}
                 initialValues={{ first_name: '', last_name: '', username: '', email: '', phone: '' }}
-                onSubmit={values => registerUser(values)}>
+                onSubmit={values => handleRegister(values)}
+            >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid }) => (
-                    <>
+                    <View style={styles.registerForm}>
 
                         <Input
                             placeholder='fist name'
@@ -111,10 +145,15 @@ const Register: () => Node = () => {
                         <Button
                             title='Register'
                             onPress={handleSubmit}
-                            style={styles.submitBtn}
-                            disabled={!isValid}
+                            buttonStyle={styles.submitBtn}
+                            disabled={!isValid || loading}
                         />
-                    </>
+                        <View style={styles.loginLinkContainer}>
+                            <Text>Already have an account? </Text>
+                            <Text style={styles.loginLink} onPress={navigateToLogin}>Login</Text>
+                        </View>
+
+                    </View>
 
                 )}
 
@@ -125,15 +164,31 @@ const Register: () => Node = () => {
 
 const styles = StyleSheet.create({
     registerContainer: {
+        display: 'flex',
         padding: 10,
         backgroundColor: 'white',
         elevation: 10,
+        flex: 1,
     },
-    input: {
-
+    registerForm: {
+        flex: 1,
+        height: windowHeight,
+        marginTop: 'auto',
     },
     inputError: {
         color: 'red',
+    },
+    submitBtn: {
+        marginTop: '10%',
+    },
+    loginLinkContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        padding: 5,
+        marginLeft: 'auto',
+    },
+    loginLink: {
+        color: 'blue'
     }
 })
 
