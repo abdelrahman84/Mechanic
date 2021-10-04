@@ -81,7 +81,7 @@ const Register: () => Node = ({ navigation }) => {
                 initialValues={{ first_name: '', last_name: '', username: '', email: '', phone: '' }}
                 onSubmit={values => handleRegister(values)}
             >
-                {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid }) => (
+                {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid, dirty }) => (
                     <View style={styles.registerForm}>
 
                         <Input
@@ -146,7 +146,8 @@ const Register: () => Node = ({ navigation }) => {
                             title='Register'
                             onPress={handleSubmit}
                             buttonStyle={styles.submitBtn}
-                            disabled={!isValid || loading}
+                            disabled={!isValid || !dirty || loading}
+                            testID="register-btn"
                         />
                         <View style={styles.loginLinkContainer}>
                             <Text>Already have an account? </Text>
