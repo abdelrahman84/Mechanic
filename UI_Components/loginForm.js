@@ -80,17 +80,14 @@ const LoginForm: () => Node = ({ onNavigateToRegister, onFormSubmit, isLoading }
 }
 
 const styles = StyleSheet.create({
-    loignContainer: {
+    loginForm: {
         padding: 10,
         backgroundColor: 'white',
         elevation: 10,
-        height: windowHeight,
+        minHeight: windowHeight,
     },
     inputError: {
         color: 'red',
-    },
-    submitBtn: {
-        marginTop: '90%',
     },
     registerLinkContainer: {
         display: 'flex',
