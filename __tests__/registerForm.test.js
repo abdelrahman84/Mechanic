@@ -9,7 +9,6 @@ describe('Register form', () => {
 
         navigateToLogin = jest.fn();
         formSumbit = jest.fn();
-        navigateToLogin = jest.fn();
 
         const { queryByTestId, getByPlaceholderText, queryByText } = render(<RegisterForm onNavigateToLogin={navigateToLogin} onFormSumbit={formSumbit}
             isLoading={false} />)

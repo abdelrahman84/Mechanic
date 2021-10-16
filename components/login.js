@@ -1,25 +1,12 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { Formik } from 'formik';
-import * as yup from 'yup';
-import { Input, Button } from 'react-native-elements';
+import { View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 
 import { API_URL } from "@env";
 import { accessToken, loginUser } from '../store/actions';
-
-const LoginValidation = yup.object().shape({
-    email: yup
-        .string()
-        .email('Please enter a valid email addresss')
-        .required('Email address is required'),
-    password: yup
-        .string()
-        .required('Password is required')
-
-})
+import LoginForm from '../UI_Components/loginForm';
 
 
 const Login: () => Node = ({ navigation }) => {
@@ -48,98 +35,19 @@ const Login: () => Node = ({ navigation }) => {
         })
     }
 
-    const navigateToLogin = () => {
+    const navigateToRegister = () => {
         navigation.navigate('Register')
     }
 
-
     return (
-        <View style={styles.loignContainer}>
-            <Formik
-                validationSchema={LoginValidation}
-                initialValues={{ email: '', password: '' }}
-                onSubmit={values => handleLogin(values)}>
-                {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid }) => (
-                    <View style={styles.loginForm}>
+        <View>
 
-                        <Input
-                            placeholder='email'
-                            label='Email'
-                            onChangeText={handleChange('email')}
-                            onBlur={handleBlur('email')}
-                            value={values.email}
-                            keyboardType='email-address'
-                            leftIcon={{ type: 'font-awesome', name: 'envelope' }}
-                        />
-                        {(errors.email && touched.email) &&
-                            <Text style={styles.inputError}>{errors.email}</Text>
-                        }
-
-                        <Input
-                            placeholder='password'
-                            label='Password'
-                            onChangeText={handleChange('password')}
-                            onBlur={handleBlur('password')}
-                            value={values.password}
-                            secureTextEntry={true}
-                            leftIcon={{ type: 'font-awesome', name: 'lock' }}
-                        />
-                        {(errors.password && touched.password) &&
-                            <Text style={styles.inputError}>{errors.password}</Text>
-                        }
-
-                        <Button
-                            title='Login'
-                            onPress={handleSubmit}
-                            buttonStyle={styles.submitBtn}
-                            disabled={!isValid || loading}
-                        />
-
-                        <View style={styles.registerLinkContainer}>
-                            <Text>New user? </Text>
-                            <Text style={styles.registerLink} onPress={navigateToLogin}>Register</Text>
-                        </View>
-
-                    </View>
-
-                )}
-
-            </Formik>
-
+            <LoginForm onNavigateToRegister={navigateToRegister} onFormSubmit={handleLogin}
+                isLoading={loading} />
 
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    loignContainer: {
-        padding: 10,
-        backgroundColor: 'white',
-        elevation: 10,
-        display: 'flex',
-        flex: 1,
-    },
-    loginForm: {
-        display: 'flex',
-        flex: 1,
-    },
-    inputError: {
-        color: 'red',
-    },
-    submitBtn: {
-        marginTop: '90%',
-    },
-    registerLinkContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        padding: 5,
-        marginLeft: 'auto',
-    },
-    registerLink: {
-        color: 'blue'
-    }
-})
-
 
 export default Login;
 
