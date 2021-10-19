@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor, act } from '@testing-library/react-native'
 
-import LoginForm from '../UI_Components/loginForm';
+import LoginForm from '../UI_Components/LoginForm';
 
 describe('Login form', () => {
 

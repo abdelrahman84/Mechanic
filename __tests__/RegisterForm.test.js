@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor, act } from '@testing-library/react-native'
 
-import RegisterForm from '../UI_Components/registerForm';
+import RegisterForm from '../UI_Components/RegisterForm';
 
 describe('Register form', () => {
 

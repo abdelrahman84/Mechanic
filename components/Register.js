@@ -8,7 +8,7 @@ import axios from 'axios';
 import Toast from 'react-native-toast-message';
 
 import { API_URL } from "@env";
-import RegisterForm from '../UI_Components/registerForm';
+import RegisterForm from '../UI_Components/RegisterForm';
 
 const Register: () => Node = ({ navigation }) => {
 

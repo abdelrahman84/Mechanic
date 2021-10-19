@@ -5,9 +5,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
 // app
-import Register from './components/register';
-import Login from './components/login';
-import Dashboard from './components/dashboard';
+import Register from './components/Register';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
 
 const Stack = createStackNavigator();
 

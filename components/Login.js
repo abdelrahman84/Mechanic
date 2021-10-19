@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 
 import { API_URL } from "@env";
 import { accessToken, loginUser } from '../store/actions';
-import LoginForm from '../UI_Components/loginForm';
+import LoginForm from '../UI_Components/LoginForm';
 
 
 const Login: () => Node = ({ navigation }) => {
