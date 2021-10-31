@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -20,10 +21,16 @@ const Login: () => Node = ({ navigation }) => {
         toggleLoading(true);
         axios.post(API_URL + 'login', userData).then((response) => {
             const user = JSON.parse(response.data.user)
+            const token = response.data.access;
+
             dispatch(loginUser(user));
-            dispatch(accessToken(response.data.access))
+            dispatch(accessToken(token))
+
+            storeUserData(user, token);
+
             navigation.navigate('Dashboard')
             toggleLoading(false);
+
         }).catch((error) => {
             Toast.show({
                 text1: 'error',
@@ -35,19 +42,37 @@ const Login: () => Node = ({ navigation }) => {
         })
     }
 
+    const storeUserData = async (user, token) => {
+        try {
+            await AsyncStorage.setItem('USER', JSON.stringify(user))
+            await AsyncStorage.setItem('TOKEN', token)
+        } catch (e) {
+            Toast.show({
+                text1: 'error',
+                text2: 'Something went wrong, please try again',
+                type: 'error',
+                visibilityTime: 4000
+            })
+        }
+    }
+
     const navigateToRegister = () => {
         navigation.navigate('Register')
     }
 
     return (
-        <View>
-
+        <View style={styles.loignContainer}>
             <LoginForm onNavigateToRegister={navigateToRegister} onFormSubmit={handleLogin}
                 isLoading={loading} />
 
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    loignContainer: {
+    }
+})
 
 export default Login;
 

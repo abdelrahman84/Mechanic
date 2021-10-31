@@ -135,7 +135,9 @@ const RegisterForm: () => Node = ({ onNavigateToLogin, onFormSumbit, isLoading }
 
 const styles = StyleSheet.create({
     registerContainer: {
-        padding: 10,
+        paddingTop: 50,
+        paddingRight: 20,
+        paddingLeft: 20,
         backgroundColor: 'white',
         elevation: 10,
         height: windowHeight,

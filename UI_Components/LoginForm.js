@@ -73,15 +73,15 @@ const LoginForm: () => Node = ({ onNavigateToRegister, onFormSubmit, isLoading }
                 )}
 
             </Formik>
-
-
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     loginForm: {
-        padding: 10,
+        paddingTop: 50,
+        paddingRight: 20,
+        paddingLeft: 20,
         backgroundColor: 'white',
         elevation: 10,
         minHeight: windowHeight,

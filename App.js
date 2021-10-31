@@ -8,6 +8,7 @@ import 'react-native-gesture-handler';
 import Register from './components/Register';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
+import StartPage from './components/StartPage';
 
 const Stack = createStackNavigator();
 
@@ -17,9 +18,10 @@ const App: () => Node = () => {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="StartPage" component={StartPage} />
+        <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Dashboard" component={Dashboard} />
       </Stack.Navigator>
     </NavigationContainer>
   );
