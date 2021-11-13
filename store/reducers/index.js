@@ -4,9 +4,7 @@ import { ACCESS_TOKEN, LOGIN_USER } from "../constants"
 const initialState = {
     user: {
         id: '',
-        first_name: '',
-        last_name: '',
-        username: '',
+        name: '',
         email: '',
         phone: ''
     },

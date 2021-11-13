@@ -14,15 +14,9 @@ const windowHeight = Dimensions.get('window').height;
 const PHONE_NUM_MIN_DIGITS = 11;
 
 const registerValidation = yup.object().shape({
-    first_name: yup
+    name: yup
         .string()
-        .required('First name is required'),
-    last_name: yup
-        .string()
-        .required('Last name is required'),
-    username: yup
-        .string()
-        .required('username is required'),
+        .required('Name is required'),
     email: yup
         .string()
         .email('Please enter a valid email addresss')
@@ -43,47 +37,23 @@ const RegisterForm: () => Node = ({ onNavigateToLogin, onFormSumbit, isLoading }
 
             <Formik
                 validationSchema={registerValidation}
-                initialValues={{ first_name: '', last_name: '', username: '', email: '', phone: '' }}
+                initialValues={{ name: '', email: '', phone: '' }}
                 onSubmit={values => onFormSumbit(values)}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid, dirty }) => (
                     <View style={styles.registerForm}>
 
                         <Input
-                            placeholder='first name'
-                            label='First name'
-                            onChangeText={handleChange('first_name')}
-                            onBlur={handleBlur('first_name')}
-                            value={values.first_name}
+                            placeholder='full name'
+                            label='Full name'
+                            onChangeText={handleChange('name')}
+                            onBlur={handleBlur('name')}
+                            value={values.name}
                             style={styles.input}
-                            testID='first_name'
+                            testID='name'
                         />
-                        {(errors.first_name && touched.first_name) &&
-                            <Text style={styles.inputError}>{errors.first_name}</Text>
-                        }
-
-                        <Input
-                            placeholder='last name'
-                            label='Last name'
-                            onChangeText={handleChange('last_name')}
-                            onBlur={handleBlur('last_name')}
-                            value={values.last_name}
-                            testID='last_name'
-                        />
-                        {(errors.last_name && touched.last_name) &&
-                            <Text style={styles.inputError}>{errors.last_name}</Text>
-                        }
-
-                        <Input
-                            placeholder='username'
-                            label='Username'
-                            onChangeText={handleChange('username')}
-                            onBlur={handleBlur('username')}
-                            value={values.username}
-                            testID='username'
-                        />
-                        {(errors.username && touched.username) &&
-                            <Text style={styles.inputError}>{errors.username}</Text>
+                        {(errors.name && touched.name) &&
+                            <Text style={styles.inputError}>{errors.name}</Text>
                         }
 
                         <Input
