@@ -22,14 +22,12 @@ describe('Register form', () => {
             expect(registerBtn).toBeDisabled();
         })
 
-        const firstNameInput = getByPlaceholderText('first name');
-        const lastNameInput = getByPlaceholderText('last name');
+        const fullNameInput = getByPlaceholderText('full name');
         const emailInput = getByPlaceholderText('email');
         const phoneNumberInput = getByPlaceholderText('phone number');
 
         await act(async () =>
-            fireEvent.changeText(firstNameInput, 'Ahmed'),
-            fireEvent.changeText(lastNameInput, 'Mohamed'),
+            fireEvent.changeText(fullNameInput, 'Abdelrahman Ahmed'),
             fireEvent.changeText(emailInput, 'test@test.com'),
             fireEvent.changeText(phoneNumberInput, '01234567891'),
         )
