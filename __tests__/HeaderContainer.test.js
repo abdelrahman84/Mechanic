@@ -9,43 +9,49 @@ describe('Header', () => {
 
     const onLogout = jest.fn();
 
-    test('Should render correctly', async () => {
+    test('Should render correctly for login link', async () => {
 
-        const { queryByTestId, queryByText } = render(<HeaderContainer onNavigateChange={onNavigateChange}
+        const { queryByTestId } = render(<HeaderContainer onNavigateChange={onNavigateChange}
             onLogout={onLogout} />);
 
-        // test homeIcon   
-        const homeIcon = queryByTestId('home-icon');
-        expect(homeIcon).not.toBeNull();
-        fireEvent.press(homeIcon);
-        expect(onNavigateChange).toHaveBeenCalled();
 
-        // test rightIcon
-        const rightIcon = queryByTestId('right-icon');
-        expect(rightIcon).not.toBeNull();
+        // test letMenuIcon
+        const leftIcon = queryByTestId('left-icon');
+        expect(leftIcon).not.toBeNull();
 
         // test logout link
         expect(queryByTestId('logout-item')).toBeNull();
 
-        // toggle view right menu
-        fireEvent.press(rightIcon);
+        // toggle view left menu
+        fireEvent.press(leftIcon);
         expect(queryByTestId('logout-item')).not.toBeNull();
+
+
+        //toggle hide left menu
+        fireEvent.press(leftIcon)
+        expect(queryByTestId('logout-item')).toBeNull();
+
+        // toggle menu   
+        fireEvent.press(leftIcon)
 
         // test logoutItem
         fireEvent.press(queryByTestId('logout-item'));
         expect(onLogout).toHaveBeenCalled();
+    })
 
-        //toggle hide right menu
-        fireEvent.press(rightIcon)
-        expect(queryByText('login-item')).toBeNull();
+    test('Should render correctly for profile link', async () => {
 
-        //test left icon
+        const { queryByTestId } = render(<HeaderContainer onNavigateChange={onNavigateChange}
+            onLogout={onLogout} />);
+
+        // test letMenuIcon
         const leftIcon = queryByTestId('left-icon');
         expect(leftIcon).not.toBeNull();
 
-        //test left menu
+        // test profile link
         expect(queryByTestId('profile-item')).toBeNull();
 
+        // toggle view left menu
         fireEvent.press(leftIcon);
         expect(queryByTestId('profile-item')).not.toBeNull();
 
@@ -53,8 +59,5 @@ describe('Header', () => {
         fireEvent.press(queryByTestId('profile-item'));
         expect(onNavigateChange).toHaveBeenCalled();
 
-        //toggle hide left menu
-        fireEvent.press(leftIcon)
-        expect(queryByText('profile-item')).toBeNull();
     })
 })
