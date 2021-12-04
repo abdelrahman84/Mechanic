@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN, LOGIN_USER } from "../constants";
+import { ACCESS_TOKEN, LOGIN_USER, UPDATE_USER_NAME } from "../constants";
 
 export function loginUser(user) {
   return {
@@ -13,3 +13,10 @@ export function accessToken(token) {
     payload: token
   }
 }  
+
+export function updateUserName(user) {
+  return {
+    type: UPDATE_USER_NAME,
+    payload: user,
+  }
+}

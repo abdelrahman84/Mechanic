@@ -12,11 +12,15 @@ const Profile: () => Node = ({ navigation }) => {
 
     const user = useSelector(state => state.user);
 
+    const handleUpdateName = () => {
+        navigation.navigate('EditName');
+    }
+
     const profileItems =
         <View>
 
-            <ListItem key='name'>
-                <ListItem.Content style={styles.listItemContainer}>
+            <ListItem key='name' onPress={() =>handleUpdateName()}>
+                <ListItem.Content style={styles.listItemContainer} >
                     <View style={styles.leftListItem}>
                         <Icon type='font-awesome' name='user-circle' />
 

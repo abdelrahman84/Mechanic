@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN, LOGIN_USER } from "../constants"
+import { ACCESS_TOKEN, LOGIN_USER, UPDATE_USER_NAME } from "../constants"
 
 
 const initialState = {
@@ -25,6 +25,15 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 token: action.payload
+            }
+
+        case UPDATE_USER_NAME:
+
+            return {
+                ...state,
+                user: {
+                    ...state.user, name: action.payload
+                }
             }
 
         default:

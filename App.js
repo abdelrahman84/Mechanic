@@ -11,6 +11,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import StartPage from './components/StartPage';
 import Profile from './components/Profile';
+import EditName from './components/EditName';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ const App: () => Node = () => {
           <Stack.Screen name="StartPage" component={StartPage} />
           <Stack.Screen name="Dashboard" component={Dashboard} />
           <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="EditName" component={EditName} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>
