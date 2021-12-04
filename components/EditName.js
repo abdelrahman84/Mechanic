@@ -24,7 +24,7 @@ const EditName: () => Node = ({ navigation }) => {
     const handleNameChange = (userData) => {
 
         toggleLoading(true);
-        customAxios(token).put(API_URL + 'updateUser', userData).then((response) => {
+        customAxios(token, navigation).put(API_URL + 'updateUser', userData).then((response) => {
 
             const updatedName = response.data.updated_name
 
@@ -42,7 +42,6 @@ const EditName: () => Node = ({ navigation }) => {
             toggleLoading(false);
 
         }).catch((error) => {
-            console.log(error)
             Toast.show({
                 text1: 'error',
                 text2: 'Something went wrong, please try again',
