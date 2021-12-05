@@ -6,6 +6,9 @@ import { useDispatch } from 'react-redux';
 import { accessToken, loginUser } from '../store/actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CommonActions } from '@react-navigation/native';
+import { API_URL } from "@env";
+
+import customAxios from '../helpers/httpInterceptor';
 
 
 const StartPage: () => Node = ({ navigation }) => {
@@ -16,35 +19,50 @@ const StartPage: () => Node = ({ navigation }) => {
 
     const checkLocalSotrage = async () => {
 
-        const user = await AsyncStorage.getItem('USER');
         const token = await AsyncStorage.getItem('TOKEN');
 
-        if (user && token) {
-            const userObject = JSON.parse(user);
-            dispatch(loginUser(userObject));
-            dispatch(accessToken(token))
+        if (token) {
+
+            customAxios(token, navigation).get(API_URL + 'getUserData').then((response) => {
+
+                const userObject = response.data.user;
+                dispatch(loginUser(userObject));
+                dispatch(accessToken(token))
+
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [
+                            { name: 'Dashboard' },
+                        ],
+                    })
+                );
+            }).catch((error) => {
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [
+                            { name: 'Login' },
+                        ],
+                    })
+                );
+
+            })
+        }
+
+        // If no pervious session
+        if (!token) {
 
             navigation.dispatch(
                 CommonActions.reset({
                     index: 0,
                     routes: [
-                        { name: 'Dashboard' },
+                        { name: 'Login' },
                     ],
                 })
             );
-            return;
+
         }
-
-        // If no pervious session
-        navigation.dispatch(
-            CommonActions.reset({
-                index: 0,
-                routes: [
-                    { name: 'Login' },
-                ],
-            })
-        );
-
     }
 
     return (

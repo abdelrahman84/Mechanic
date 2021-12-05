@@ -26,7 +26,7 @@ const Login: () => Node = ({ navigation }) => {
             dispatch(loginUser(user));
             dispatch(accessToken(token))
 
-            storeUserData(user, token);
+            storeUserData(token);
 
             navigation.navigate('Dashboard')
             toggleLoading(false);
@@ -42,9 +42,8 @@ const Login: () => Node = ({ navigation }) => {
         })
     }
 
-    const storeUserData = async (user, token) => {
+    const storeUserData = async (token) => {
         try {
-            await AsyncStorage.setItem('USER', JSON.stringify(user))
             await AsyncStorage.setItem('TOKEN', token)
         } catch (e) {
             Toast.show({
