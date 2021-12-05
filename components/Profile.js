@@ -12,14 +12,14 @@ const Profile: () => Node = ({ navigation }) => {
 
     const user = useSelector(state => state.user);
 
-    const handleUpdateName = () => {
-        navigation.navigate('EditName');
+    const handleNavigation = (routeName) => {
+        navigation.navigate(routeName);
     }
 
     const profileItems =
         <View>
 
-            <ListItem key='name' onPress={() =>handleUpdateName()}>
+            <ListItem key='name' onPress={() => handleNavigation('EditName')}>
                 <ListItem.Content style={styles.listItemContainer} >
                     <View style={styles.leftListItem}>
                         <Icon type='font-awesome' name='user-circle' />
@@ -67,6 +67,24 @@ const Profile: () => Node = ({ navigation }) => {
                             </Text>
                         </View>
                     </View>
+                </ListItem.Content>
+            </ListItem>
+
+            <ListItem key='password' onPress={() => handleNavigation('ChangePassword')}>
+                <ListItem.Content style={styles.listItemContainer} >
+                    <View style={styles.leftListItem}>
+                        <Icon type='font-awesome' name='lock' />
+
+                        <View style={styles.menuItem}>
+                            <Text h4>Password</Text>
+                            <Text style={styles.menuTitle}
+                            >
+                                change password
+                            </Text>
+                        </View>
+
+                    </View>
+                    <Icon type='font-awesome' name='wrench' style={styles.updateIcon} />
                 </ListItem.Content>
             </ListItem>
 

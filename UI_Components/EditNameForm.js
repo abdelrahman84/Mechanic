@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { Dimensions } from 'react-native';
 import * as yup from 'yup';
 import { Formik } from 'formik';
@@ -26,7 +26,7 @@ const EditNameForm: () => Node = ({ onFormSubmit, isLoading }) => {
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid, dirty }) => (
                     <View style={styles.editNameForm}>
 
-                    <Input
+                        <Input
                             placeholder='full name'
                             label='Full name'
                             onChangeText={handleChange('name')}
