@@ -28,7 +28,7 @@ const Login: () => Node = ({ navigation }) => {
 
             storeUserData(token);
 
-            navigation.navigate('Dashboard')
+            navigation.navigate('Home')
             toggleLoading(false);
 
         }).catch((error) => {

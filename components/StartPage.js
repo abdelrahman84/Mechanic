@@ -33,7 +33,7 @@ const StartPage: () => Node = ({ navigation }) => {
                     CommonActions.reset({
                         index: 0,
                         routes: [
-                            { name: 'Dashboard' },
+                            { name: 'Home' },
                         ],
                     })
                 );
