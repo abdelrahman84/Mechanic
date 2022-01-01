@@ -1,25 +1,82 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text } from 'react-native-elements';
-import { Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Platform } from 'react-native';
+import MapboxGL from '@react-native-mapbox-gl/maps';
+import GetLocation from 'react-native-get-location';
 
+import { MAP_BOX_TOKEN } from '@env';
 
-const windowHeight = Dimensions.get('window').height;
+MapboxGL.setAccessToken(MAP_BOX_TOKEN);
 
 const AddMechanic: () => Node = ({ navigation }) => {
 
-    return (
-        <View style={styles.addMechanicContainer}>
-            <Text h4>Add mechanic</Text>
-        </View>
-    )
+    const [coordinates, setCorrdinates] = useState([78.9629, 20.5937]);
+
+    const [isFetchingAllowed, setFetchingAllowed] = useState(false);
+
+    React.useEffect(() => checkMapBoxPermssion(), []);
+
+    const checkMapBoxPermssion = async () => {
+
+        if (Platform.OS !== 'android') {
+
+            setFetchingAllowed(true);
+            return;
+        }
+
+        const isGranted = await MapboxGL.requestAndroidLocationPermissions();
+
+        MapboxGL.locationManager.start();
+
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 15000
+        })
+            .then(location => {
+                setCorrdinates([location.longitude, location.latitude]);
+                setFetchingAllowed(isGranted);
+
+            })
+            .catch(error => {
+                const { code, message } = error;
+                console.warn(code, message)
+            })
+
+    }
+
+    if (isFetchingAllowed) {
+
+        return (
+            <View style={styles.addMechanicContainer}>
+                <View style={styles.mapContainer}>
+                    <MapboxGL.MapView style={styles.map} >
+
+                        <MapboxGL.Camera zoomLevel={15} centerCoordinate={coordinates} />
+                        <MapboxGL.PointAnnotation id="add-mechanic-annotation" coordinate={coordinates} />
+
+                    </MapboxGL.MapView>
+                </View>
+            </View>
+        )
+    }
+
+    if (!isFetchingAllowed) {
+        return null;
+    }
 }
 
 const styles = StyleSheet.create({
     addMechanicContainer: {
-        backgroundColor: 'white',
-        minHeight: windowHeight,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
+    mapContainer: {
+        height: '100%',
+        width: '100%',
+    },
+    map: {
+        flex: 1,
+    }
 })
 
 
