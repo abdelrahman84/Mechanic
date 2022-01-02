@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import GetLocation from 'react-native-get-location';
+import { Spinner } from 'native-base';
 
 import { MAP_BOX_TOKEN } from '@env';
 
@@ -46,7 +47,7 @@ const AddMechanic: () => Node = ({ navigation }) => {
     if (isFetchingAllowed) {
 
         return (
-            <View style={styles.addMechanicContainer}>
+            <View style={styles.pageContainer}>
                 <View style={styles.mapContainer}>
                     <MapboxGL.MapView style={styles.map} >
 
@@ -60,12 +61,16 @@ const AddMechanic: () => Node = ({ navigation }) => {
     }
 
     if (!isFetchingAllowed) {
-        return null;
+        return (
+            <View style={styles.pageContainer}>
+                <Spinner />
+            </View>
+        )
     }
 }
 
 const styles = StyleSheet.create({
-    addMechanicContainer: {
+    pageContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
