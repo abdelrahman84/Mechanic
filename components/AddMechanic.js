@@ -44,12 +44,19 @@ const AddMechanic: () => Node = ({ navigation }) => {
 
     }
 
+    const handleRegionChange = (region) => {
+        const longitude = region.geometry.coordinates[0];
+        const latitude = region.geometry.coordinates[1];
+        setCorrdinates([longitude, latitude]);
+    }
+
     if (isFetchingAllowed) {
 
         return (
             <View style={styles.pageContainer}>
                 <View style={styles.mapContainer}>
-                    <MapboxGL.MapView style={styles.map} >
+                    <MapboxGL.MapView style={styles.map}
+                        onRegionDidChange={handleRegionChange}>
 
                         <MapboxGL.Camera zoomLevel={15} centerCoordinate={coordinates} />
                         <MapboxGL.PointAnnotation id="add-mechanic-annotation" coordinate={coordinates} />
