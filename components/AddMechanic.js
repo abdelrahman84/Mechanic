@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform, Image } from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import GetLocation from 'react-native-get-location';
 import { Spinner } from 'native-base';
 
-import { MAP_BOX_TOKEN } from '@env';
+import { MAP_BOX_TOKEN, APP_DOMAIN } from '@env';
 
 MapboxGL.setAccessToken(MAP_BOX_TOKEN);
 
@@ -59,7 +59,16 @@ const AddMechanic: () => Node = ({ navigation }) => {
                         onRegionDidChange={handleRegionChange}>
 
                         <MapboxGL.Camera zoomLevel={15} centerCoordinate={coordinates} />
-                        <MapboxGL.PointAnnotation id="add-mechanic-annotation" coordinate={coordinates} />
+                        <MapboxGL.MarkerView id="add-mechanic-annotation" coordinate={coordinates}>
+                            <View>
+                                <View style={styles.mechanicMarkerContainer}>
+                                    <Image
+                                        source={{ uri: `${APP_DOMAIN}/static/images/add_mechanic_marker.png` }}
+                                        style={styles.markupImage}
+                                    />
+                                </View>
+                            </View>
+                        </MapboxGL.MarkerView>
 
                     </MapboxGL.MapView>
                 </View>
@@ -88,6 +97,17 @@ const styles = StyleSheet.create({
     },
     map: {
         flex: 1,
+    },
+    mechanicMarkerContainer: {
+        alignItems: 'center',
+        width: 60,
+        backgroundColor: 'transparent',
+        height: 70,
+    },
+    markupImage: {
+        width: 20,
+        height: 30,
+        resizeMode: 'cover'
     }
 })
 
