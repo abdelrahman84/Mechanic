@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Platform, Image } from 'react-native';
-import MapboxGL from '@react-native-mapbox-gl/maps';
 import GetLocation from 'react-native-get-location';
 import { Spinner } from 'native-base';
+import MapboxGL from '@rnmapbox/maps';
 
 import { MAP_BOX_TOKEN, APP_DOMAIN } from '@env';
+import AddMechanicCard from './AddMechanicCard';
 
 MapboxGL.setAccessToken(MAP_BOX_TOKEN);
 
@@ -14,35 +15,36 @@ const AddMechanic: () => Node = ({ navigation }) => {
 
     const [isFetchingAllowed, setFetchingAllowed] = useState(false);
 
-    React.useEffect(() => checkMapBoxPermssion(), []);
+    React.useEffect(() => {
+        const checkMapBoxPermssion = async () => {
 
-    const checkMapBoxPermssion = async () => {
+            if (Platform.OS !== 'android') {
 
-        if (Platform.OS !== 'android') {
+                setFetchingAllowed(true);
+                return;
+            }
 
-            setFetchingAllowed(true);
-            return;
-        }
+            const isGranted = await MapboxGL.requestAndroidLocationPermissions();
 
-        const isGranted = await MapboxGL.requestAndroidLocationPermissions();
+            MapboxGL.locationManager.start();
 
-        MapboxGL.locationManager.start();
-
-        GetLocation.getCurrentPosition({
-            enableHighAccuracy: true,
-            timeout: 15000
-        })
-            .then(location => {
-                setCorrdinates([location.longitude, location.latitude]);
-                setFetchingAllowed(isGranted);
-
+            GetLocation.getCurrentPosition({
+                enableHighAccuracy: true,
+                timeout: 15000
             })
-            .catch(error => {
-                const { code, message } = error;
-                console.warn(code, message)
-            })
+                .then(location => {
+                    setCorrdinates([location.longitude, location.latitude]);
+                    setFetchingAllowed(isGranted);
 
-    }
+                })
+                .catch(error => {
+                    const { code, message } = error;
+                    console.warn(code, message)
+                })
+
+        };
+        checkMapBoxPermssion();
+    }, []);
 
     const handleRegionChange = (region) => {
         const longitude = region.geometry.coordinates[0];
@@ -71,6 +73,9 @@ const AddMechanic: () => Node = ({ navigation }) => {
                         </MapboxGL.MarkerView>
 
                     </MapboxGL.MapView>
+
+                    <AddMechanicCard />
+
                 </View>
             </View>
         )
@@ -108,7 +113,7 @@ const styles = StyleSheet.create({
         width: 20,
         height: 30,
         resizeMode: 'cover'
-    }
+    },
 })
 
 

@@ -15,29 +15,43 @@ const StartPage: () => Node = ({ navigation }) => {
 
     const dispatch = useDispatch();
 
-    React.useEffect(() => checkLocalSotrage(), []);
+    React.useEffect(() => {
+        const checkLocalSotrage = async () => {
 
-    const checkLocalSotrage = async () => {
+            const token = await AsyncStorage.getItem('TOKEN');
 
-        const token = await AsyncStorage.getItem('TOKEN');
+            if (token) {
 
-        if (token) {
+                customAxios(token, navigation).get(API_URL + 'getUserData').then((response) => {
 
-            customAxios(token, navigation).get(API_URL + 'getUserData').then((response) => {
+                    const userObject = response.data.user;
+                    dispatch(loginUser(userObject));
+                    dispatch(accessToken(token))
 
-                const userObject = response.data.user;
-                dispatch(loginUser(userObject));
-                dispatch(accessToken(token))
+                    navigation.dispatch(
+                        CommonActions.reset({
+                            index: 0,
+                            routes: [
+                                { name: 'Home' },
+                            ],
+                        })
+                    );
+                }).catch((error) => {
+                    navigation.dispatch(
+                        CommonActions.reset({
+                            index: 0,
+                            routes: [
+                                { name: 'Login' },
+                            ],
+                        })
+                    );
 
-                navigation.dispatch(
-                    CommonActions.reset({
-                        index: 0,
-                        routes: [
-                            { name: 'Home' },
-                        ],
-                    })
-                );
-            }).catch((error) => {
+                })
+            }
+
+            // If no pervious session
+            if (!token) {
+
                 navigation.dispatch(
                     CommonActions.reset({
                         index: 0,
@@ -47,23 +61,10 @@ const StartPage: () => Node = ({ navigation }) => {
                     })
                 );
 
-            })
-        }
-
-        // If no pervious session
-        if (!token) {
-
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        { name: 'Login' },
-                    ],
-                })
-            );
-
-        }
-    }
+            }
+        };
+        checkLocalSotrage();
+    }, []);
 
     return (
         <View>
